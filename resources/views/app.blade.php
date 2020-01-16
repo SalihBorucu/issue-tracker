@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Boards (Trello-Style) | Dashboard UI Kit</title>
+    <title>Issue Tracker</title>
     <meta name="description" content="Dashboard UI Kit">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -62,7 +62,7 @@
     </header>
 
 
-    <div class="container-fluid" id="app">
+    <div class="container-fluid u-mt-small" id="app">
         <main-app :inj-boards="{{$boards}}">
 
         </main-app>

@@ -1,39 +1,43 @@
 <template>
     <div class="col-sm-6 col-md-4 col-xl">
-        <div class="c-board c-board--info">
+        <div class="c-board" :class="board.color">
             <div class="c-board__header">
                 <h4 class="c-board__title">
                     {{ board.title }}
-                    <span class="u-text-mute"> 8</span>
+                    <span class="u-text-mute"> {{ tasks.length }}</span>
                 </h4>
-
-                <div class="c-board__actions dropdown">
-                    <a
-                        class="dropdown-toggle"
-                        href="#"
-                        id="dropdwonMenuBoard1"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        ><i class="fa fa-ellipsis-h"></i
-                    ></a>
-                    <div
-                        class="c-dropdown__menu dropdown-menu dropdown-menu-right"
-                        aria-labelledby="dropdwonMenuBoard1"
-                    >
-                        <a href="#" class="c-dropdown__item">Action 1</a>
-                        <a href="#" class="c-dropdown__item">Action 2</a>
-                        <a href="#" class="c-dropdown__item">Action 3</a>
-                    </div>
+                <div>
+                    <a @click="editBoard()">
+                        <i class="fa fa-pencil u-mr-xsmall"></i>
+                    </a>
                 </div>
             </div>
 
             <div class="c-board__content">
                 <!-- // .c-task -->
-                <task></task>
+                <task
+                    v-for="(task, index) in tasks"
+                    :key="index"
+                    :task="task"
+                ></task>
+                <create-task
+                    ref="createTaskComp"
+                    v-if="is_creating"
+                    @task-submitted="submitTask"
+                ></create-task>
             </div>
-            <a href="#" class="c-board__btn">
-                <i class="fa fa-plus"></i>
+            <a
+                class="c-board__btn"
+                :class="{ 'c-board__btn--success': is_creating }"
+                @click="createTask()"
+            >
+                <i
+                    class="fa"
+                    :class="{
+                        'fa-plus': !is_creating,
+                        'fa-check': is_creating
+                    }"
+                ></i>
             </a>
         </div>
         <!-- // .c-board__content -->
@@ -43,12 +47,49 @@
 
 <script>
 import Task from "./Task.vue";
+import CreateTask from "./CreateTask.vue";
 
 export default {
     props: ["board"],
-    components: { Task },
-    mounted() {
-        console.log("Component mounted.");
+
+    components: { Task, CreateTask },
+
+    data() {
+        return {
+            is_creating: false,
+            tasks: this.board.tasks
+        };
+    },
+
+    methods: {
+        createTask() {
+            if (this.is_creating) {
+                // SUBMIT
+                // trigger method in child from parent
+                this.$refs.createTaskComp.submitTask();
+            } else {
+                // SHOW
+                this.is_creating = true;
+            }
+        },
+
+        submitTask(newTitle) {
+            console.log(newTitle);
+            this.tasks.push({ title: newTitle });
+            this.is_creating = false;
+        },
+
+        editBoard() {
+            this.$emit("edit-board", this.board);
+        }
     }
 };
 </script>
+
+<style>
+.c-board__btn--success {
+    background: #39b54a;
+    background: linear-gradient(180deg, #39b54a, #34aa44);
+    border-color: #249533;
+}
+</style>

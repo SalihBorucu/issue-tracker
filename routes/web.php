@@ -19,4 +19,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/ajax')->group(function () {
     Route::post('/board', 'Ajax\BoardController@store');
+    Route::patch('/board/{boardId}', 'Ajax\BoardController@update');
 });

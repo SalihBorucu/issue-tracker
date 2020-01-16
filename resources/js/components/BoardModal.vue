@@ -59,9 +59,9 @@
                             name="color"
                             v-model="color"
                         >
-                            <option value="blue">Blue</option>
-                            <option value="red">Red</option>
-                            <option value="green">Green</option>
+                            <option value="c-board--info">Blue</option>
+                            <option value="c-board--danger">Red</option>
+                            <option value="c-board--success">Green</option>
                         </select>
                         <small
                             class="c-field__message u-color-danger"
@@ -76,7 +76,7 @@
                         class="c-btn c-btn--success c-btn--fullwidth"
                         @click="submit()"
                     >
-                        Connect Service
+                        Submit
                     </a>
                 </div>
             </div>
@@ -86,18 +86,21 @@
 
 <script>
 export default {
+    props: ["editingBoard"],
+
     data() {
         return {
-            title: null,
-            color: "blue",
+            title: this.editingBoard ? this.editingBoard.title : null,
+            color: this.editingBoard
+                ? this.editingBoard.color
+                : "c-board--info",
 
-            title_error: null,
-            is_creating: true
+            title_error: null
         };
     },
     computed: {
         heading() {
-            return this.is_creating ? "Create Board" : "Editing Board";
+            return this.editingBoard ? "Editing Board" : "Create Board";
         }
     },
     mounted() {
@@ -110,7 +113,7 @@ export default {
                 this.title_error = "This field is required.";
                 return;
             }
-            this.is_creating ? this.store() : this.update();
+            this.editingBoard ? this.update() : this.store();
         },
         store() {
             const vm = this;
@@ -131,7 +134,27 @@ export default {
                     console.log(error);
                 });
         },
-        update() {},
+        update() {
+            const vm = this;
+
+            let obj = {
+                title: this.title,
+                color: this.color
+            };
+
+            axios
+                .patch("/ajax/board/" + this.editingBoard.id, obj)
+                .then(function(response) {
+                    console.log(response);
+                    let updatedBoard = response.data.board;
+                    vm.closeModal();
+                    vm.$emit("board-updated", updatedBoard);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
         closeModal() {
             this.$emit("close-modal");
             $("#modal7").modal("hide");

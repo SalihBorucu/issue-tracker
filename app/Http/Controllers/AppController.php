@@ -8,7 +8,8 @@ class AppController extends Controller
 {
     public function index()
     {
-        $boards = Board::get();
+        $boards = Board::with('tasks')->get();
+        // dd($boards);
 
         return view('app')->with(['boards' => $boards]);
     }
