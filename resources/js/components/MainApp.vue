@@ -14,6 +14,7 @@
             </div>
             <board-modal
                 @close-modal="modalOn = false"
+                @board-created="boardCreated"
                 v-if="modalOn"
             ></board-modal>
         </div>
@@ -34,13 +35,12 @@ export default {
     },
 
     methods: {
-        addBoard() {
-            this.boards.push({
-                title: "x"
-            });
-        },
         createBoardModal() {
             this.modalOn = true;
+        },
+        boardCreated(board) {
+            this.boards.push(board);
+            this.modalOn = false;
         }
     }
 };

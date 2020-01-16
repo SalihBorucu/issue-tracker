@@ -103,6 +103,7 @@ export default {
     mounted() {
         $("#modal7").modal("show");
     },
+
     methods: {
         submit() {
             if (!this.title) {
@@ -111,10 +112,29 @@ export default {
             }
             this.is_creating ? this.store() : this.update();
         },
-        store() {},
+        store() {
+            const vm = this;
+
+            let obj = {
+                title: this.title,
+                color: this.color
+            };
+            axios
+                .post("/ajax/board", obj)
+                .then(function(response) {
+                    console.log(response);
+                    let newBoard = response.data.board;
+                    vm.closeModal();
+                    vm.$emit("board-created", newBoard);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
         update() {},
         closeModal() {
             this.$emit("close-modal");
+            $("#modal7").modal("hide");
         }
     }
 };

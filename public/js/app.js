@@ -2110,10 +2110,25 @@ __webpack_require__.r(__webpack_exports__);
 
       this.is_creating ? this.store() : this.update();
     },
-    store: function store() {},
+    store: function store() {
+      var vm = this;
+      var obj = {
+        title: this.title,
+        color: this.color
+      };
+      axios.post("/ajax/board", obj).then(function (response) {
+        console.log(response);
+        var newBoard = response.data.board;
+        vm.closeModal();
+        vm.$emit("board-created", newBoard);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     update: function update() {},
     closeModal: function closeModal() {
       this.$emit("close-modal");
+      $("#modal7").modal("hide");
     }
   }
 });
@@ -2186,6 +2201,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2201,13 +2217,12 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    addBoard: function addBoard() {
-      this.boards.push({
-        title: "x"
-      });
-    },
     createBoardModal: function createBoardModal() {
       this.modalOn = true;
+    },
+    boardCreated: function boardCreated(board) {
+      this.boards.push(board);
+      this.modalOn = false;
     }
   }
 });
@@ -38001,7 +38016,8 @@ var render = function() {
               on: {
                 "close-modal": function($event) {
                   _vm.modalOn = false
-                }
+                },
+                "board-created": _vm.boardCreated
               }
             })
           : _vm._e()
