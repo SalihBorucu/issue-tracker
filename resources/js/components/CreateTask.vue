@@ -15,6 +15,8 @@
 <style></style>
 <script>
 export default {
+    props: ["boardId"],
+
     data() {
         return {
             // title: null
@@ -44,9 +46,28 @@ export default {
             }
         },
 
+        storeTask() {
+            const vm = this;
+
+            let obj = {
+                title: this.$refs.editable.innerText.trim(),
+                board_id: this.boardId
+            };
+
+            axios
+                .post("/ajax/task", obj)
+                .then(function(response) {
+                    console.log(response);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
         submitTask() {
             let newTitle = this.$refs.editable.innerText.trim();
             this.$emit("task-submitted", newTitle);
+            this.storeTask();
         }
     }
 };

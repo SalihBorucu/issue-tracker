@@ -18,6 +18,11 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/ajax')->group(function () {
+    // BOARD
     Route::post('/board', 'Ajax\BoardController@store');
     Route::patch('/board/{boardId}', 'Ajax\BoardController@update');
+    // TASK
+    Route::post('/task', 'Ajax\TaskController@store');
+    Route::patch('/task/{taskId}', 'Ajax\TaskController@update');
+
 });

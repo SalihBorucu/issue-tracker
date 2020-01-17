@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Ajax;
 
+use App\Http\Controllers\Controller;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -35,7 +37,24 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "title" => 'required',
+        ]);
+        // dd($request->board_id);
+        $id = Auth::user()->id;
+
+        $task = Task::create([
+            "title" => $request->title,
+            "board_id" => $request->board_id,
+            "user_id" => $id,
+            "is_completed" => 0,
+
+        ]);
+
+        return response()->json([
+            "task" => $task,
+        ]);
+
     }
 
     /**
@@ -67,9 +86,21 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update($taskId, Request $request, Task $task)
     {
-        //
+        $task = Task::findOrFail($taskId);
+
+        $validated = $request->validate([
+            "title" => 'required',
+            "description" => 'required',
+        ]);
+
+        $task->update($validated);
+
+        return response()->json([
+            "task" => $task,
+        ]);
+
     }
 
     /**

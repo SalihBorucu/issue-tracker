@@ -24,6 +24,7 @@
                     ref="createTaskComp"
                     v-if="is_creating"
                     @task-submitted="submitTask"
+                    :board-id="board.id"
                 ></create-task>
             </div>
             <a

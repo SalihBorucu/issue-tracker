@@ -70,7 +70,7 @@
 
     </div>
 
-    <script src="js/main.min.js"></script>
+    {{-- <script src="js/main.min.js"></script> --}}
     <script src="js/app.js"></script>
 </body>
 
