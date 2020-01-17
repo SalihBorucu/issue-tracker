@@ -125,7 +125,6 @@ export default {
             axios
                 .post("/ajax/board", obj)
                 .then(function(response) {
-                    console.log(response);
                     let newBoard = response.data.board;
                     vm.closeModal();
                     vm.$emit("board-created", newBoard);
@@ -145,7 +144,6 @@ export default {
             axios
                 .patch("/ajax/board/" + this.editingBoard.id, obj)
                 .then(function(response) {
-                    console.log(response);
                     let updatedBoard = response.data.board;
                     vm.closeModal();
                     vm.$emit("board-updated", updatedBoard);

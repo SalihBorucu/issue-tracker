@@ -21,6 +21,8 @@ Route::prefix('/ajax')->group(function () {
     // BOARD
     Route::post('/board', 'Ajax\BoardController@store');
     Route::patch('/board/{boardId}', 'Ajax\BoardController@update');
+    Route::delete('/board/{boardId}', 'Ajax\BoardController@destroy');
+
     // TASK
     Route::post('/task', 'Ajax\TaskController@store');
     Route::patch('/task/{taskId}', 'Ajax\TaskController@update');

@@ -1,4 +1,4 @@
-window._ = require('lodash');
+window._ = require("lodash");
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,10 +7,10 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+    window.Popper = require("popper.js").default;
+    window.$ = window.jQuery = require("jquery");
 
-    require('bootstrap');
+    require("bootstrap");
 } catch (e) {}
 
 /**
@@ -19,9 +19,41 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = require("axios");
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+NProgress.configure({ showSpinner: true });
+// Add a request interceptor
+axios.interceptors.request.use(
+    function(config) {
+        // Do something before request is sent
+        NProgress.start();
+        return config;
+    },
+    function(error) {
+        // Do something with request error
+        console.error(error);
+        return Promise.reject(error);
+    }
+);
+
+// Add a response interceptor
+axios.interceptors.response.use(
+    function(response) {
+        // Do something with response data
+
+        NProgress.done();
+        return response;
+    },
+    function(error) {
+        // Do something with response error
+        console.error(error);
+        return Promise.reject(error);
+    }
+);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

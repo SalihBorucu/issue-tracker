@@ -1,8 +1,9 @@
 <?php
 
+use App\Comment;
 use Illuminate\Database\Seeder;
 
-class TaskSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +12,7 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        $x = factory(App\Task::class, 10)->create();
-        dd($x);
+        factory(App\Comment::class, 10)->create();
+
     }
 }

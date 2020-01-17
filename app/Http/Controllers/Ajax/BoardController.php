@@ -38,4 +38,16 @@ class BoardController extends Controller
             "board" => $board,
         ]);
     }
+
+    public function destroy($boardId)
+    {
+
+        $board = Board::findOrFail($boardId);
+
+        $board->delete();
+
+        return response()->json();
+
+    }
+
 }

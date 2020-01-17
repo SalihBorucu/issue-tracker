@@ -10,6 +10,9 @@
                     <a @click="editBoard()">
                         <i class="fa fa-pencil u-mr-xsmall"></i>
                     </a>
+                    <a @click="deleteBoard()">
+                        <i class="fa fa-trash u-mr-xsmall"></i>
+                    </a>
                 </div>
             </div>
 
@@ -19,7 +22,9 @@
                     v-for="(task, index) in tasks"
                     :key="index"
                     :task="task"
+                    @show-task-modal="launchEditTaskModal"
                 ></task>
+
                 <create-task
                     ref="createTaskComp"
                     v-if="is_creating"
@@ -41,24 +46,31 @@
                 ></i>
             </a>
         </div>
-        <!-- // .c-board__content -->
+        <task-modal
+            v-if="modalOn"
+            @close-modal="closeModal()"
+            :task="editingTask"
+            @task-updated="replaceUpdatedTask"
+        ></task-modal>
     </div>
-    <!-- // .c-board -->
 </template>
 
 <script>
 import Task from "./Task.vue";
 import CreateTask from "./CreateTask.vue";
+import TaskModal from "./TaskModal.vue";
 
 export default {
     props: ["board"],
 
-    components: { Task, CreateTask },
+    components: { Task, CreateTask, TaskModal },
 
     data() {
         return {
             is_creating: false,
-            tasks: this.board.tasks
+            tasks: this.board.tasks,
+            modalOn: false,
+            editingTask: null
         };
     },
 
@@ -82,6 +94,57 @@ export default {
 
         editBoard() {
             this.$emit("edit-board", this.board);
+        },
+
+        launchEditTaskModal(task) {
+            this.editingTask = task;
+            this.modalOn = true;
+        },
+
+        closeModal() {
+            this.modalOn = false;
+        },
+
+        replaceUpdatedTask(task) {
+            this.tasks.forEach((element, index) => {
+                if (element.id === task.id) {
+                    this.tasks[index] = task;
+                }
+            });
+        },
+
+        deleteBoard() {
+            const vm = this;
+
+            swal({
+                title: "Are you sure?",
+                text:
+                    "Once deleted, you will not be able to recover this board and its tasks!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            }).then(willDelete => {
+                if (willDelete) {
+                    axios
+                        .delete("/ajax/board/" + vm.board.id)
+                        .then(function(response) {
+                            vm.$emit("board-deleted", vm.board.id);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+
+                    swal("Your board has been deleted!", {
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                text: "OK",
+                                className: "c-btn c-btn--info c-btn--fullwidth"
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 };

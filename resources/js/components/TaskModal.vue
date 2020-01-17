@@ -11,18 +11,23 @@
     >
         <div class="c-modal__dialog modal-dialog" role="document">
             <div class="c-modal__content">
-                <div class="c-modal__header">
-                    <h3
-                        @keyup="editTask()"
-                        class="c-modal__title"
-                        :contenteditable="is_editing"
-                        ref="editableh3"
-                    >
-                        {{ task_title }}
-                    </h3>
-                    <div>
-                        <a @click="enableEditTask"
-                            ><i class=" edit fa fa-pencil u-mr-xsmall"></i
+                <div class="c-modal__header ">
+                    <div class="col pl-0">
+                        <h3
+                            @keyup="editTask()"
+                            class="c-modal__title"
+                            :contenteditable="is_editing"
+                            ref="editableh3"
+                        >
+                            {{ task_title }}
+                        </h3>
+                    </div>
+                    <div class="col-auto px-0">
+                        <a @click="enableEditTask" v-if="!is_editing">
+                            <i class="u-text-white fa fa-pencil u-mr-xsmall"></i
+                        ></a>
+                        <a @click="submitTaskChange" v-else>
+                            <i class="u-text-white fa fa-check u-mr-xsmall"></i
                         ></a>
                         <span
                             class="c-modal__close"
@@ -53,8 +58,10 @@
                         >Save Changes
                     </a>
                 </div>
-
-                <div class="c-modal__footer"></div>
+                <ol class="c-stream">
+                    <comment></comment>
+                </ol>
+                <!-- <div class="c-modal__footer"></div> -->
                 <!-- add comments, add completed -->
             </div>
         </div>
@@ -62,8 +69,13 @@
 </template>
 
 <script>
+import Comment from "./Comment.vue";
+
 export default {
     props: ["task"],
+
+    components: { Comment },
+
     data() {
         return {
             is_editing: false,
@@ -82,7 +94,11 @@ export default {
         },
 
         enableEditTask() {
+            const vm = this;
             this.is_editing = !this.is_editing;
+            this.$nextTick(() => {
+                vm.$refs.editableh3.focus();
+            });
         },
 
         editTask() {
@@ -96,18 +112,15 @@ export default {
             const vm = this;
 
             let obj = {
-                title: vm.$refs.editableh3.innerText,
-                description: vm.$refs.editable.innerText
+                title: vm.$refs.editableh3.innerText.trim(),
+                description: vm.$refs.editable.innerText.trim()
             };
 
             axios
                 .patch("/ajax/task/" + vm.task.id, obj)
                 .then(function(response) {
-                    console.log(response);
                     let updatedTask = response.data.task;
                     vm.closeModal();
-
-                    // BURDA GALDIK VUEX MI GULLANACAYIK GRANDPARENTE YOLLAMAK ICIN?
                     vm.$emit("task-updated", updatedTask);
                 })
                 .catch(function(error) {
@@ -120,5 +133,26 @@ export default {
 <style>
 a .edit {
     color: #eff3f6;
+}
+
+[contenteditable="true"] {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0.59375rem 0.9375rem;
+    transition: all 0.3s;
+    border: 1px solid #dfe3e9;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #354052;
+}
+
+.px-0 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.pl-0 {
+    padding-left: 0;
 }
 </style>

@@ -6,6 +6,7 @@
                 :key="index"
                 :board="board"
                 @edit-board="editBoardModal"
+                @board-deleted="deleteBoard"
             ></board>
 
             <div class="col-sm-6 col-md-4 col-xl">
@@ -66,6 +67,14 @@ export default {
         closeModal() {
             this.modalOn = false;
             this.editing_board = null;
+        },
+
+        deleteBoard(boardId) {
+            this.boards.forEach((element, index) => {
+                if (element.id === boardId) {
+                    this.boards.splice(index, 1);
+                }
+            });
         }
     }
 };

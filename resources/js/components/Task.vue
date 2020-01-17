@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="c-task c-task--info" @click="launchEditTaskModal">
+    <div @click="launchEditTaskModal">
+        <div class="c-task c-task--info">
             <p class="c-task__content">
                 {{ task.title }}
             </p>
@@ -13,16 +13,11 @@
                 </span>
             </div>
         </div>
-        <task-modal
-            v-if="modalOn"
-            @close-modal="closeModal()"
-            :task="injTask"
-        ></task-modal>
     </div>
 </template>
 
 <script>
-import TaskModal from "./TaskModal.vue";
+import TaskModal from "./TaskModal";
 export default {
     props: ["task"],
     components: { TaskModal },
@@ -36,11 +31,7 @@ export default {
 
     methods: {
         launchEditTaskModal() {
-            this.modalOn = true;
-        },
-
-        closeModal() {
-            this.modalOn = false;
+            this.$emit("show-task-modal", this.task);
         }
     }
 };

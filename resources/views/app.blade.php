@@ -17,6 +17,7 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/main.min.css">
+
 </head>
 
 <body>
@@ -70,7 +71,7 @@
 
     </div>
 
-    {{-- <script src="js/main.min.js"></script> --}}
+    <script src="js/main.min.js"></script>
     <script src="js/app.js"></script>
 </body>
 
