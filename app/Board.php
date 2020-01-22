@@ -2,17 +2,17 @@
 
 namespace App;
 
-use App\Events\BoardDeleted;
+// use App\Events\BoardDeleted;
 use Illuminate\Database\Eloquent\Model;
 
 class Board extends Model
 {
     protected $fillable = ['title', 'color'];
 
-    protected $dispatchesEvents = [
-        // When board is deleted...
-        'deleted' => BoardDeleted::class,
-    ];
+    // protected $dispatchesEvents = [
+    //     // When board is deleted...
+    //     'deleted' => BoardDeleted::class,
+    // ];
 
     public function tasks()
     {

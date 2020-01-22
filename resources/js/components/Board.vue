@@ -16,15 +16,23 @@
                 </div>
             </div>
 
-            <div class="c-board__content">
-                <!-- // .c-task -->
-                <task
-                    v-for="(task, index) in tasks"
-                    :key="index"
-                    :task="task"
-                    @show-task-modal="launchEditTaskModal"
-                ></task>
-
+            <div
+                class="c-board__content"
+                :data-board-id="board.id"
+                bag="first-bag"
+                v-dragula="tasks"
+            >
+                <div
+                    v-for="task in tasks"
+                    :key="task.id"
+                    :data-task-id="task.id"
+                >
+                    <task
+                        :key="task.id"
+                        :task="task"
+                        @show-task-modal="launchEditTaskModal"
+                    ></task>
+                </div>
                 <create-task
                     ref="createTaskComp"
                     v-if="is_creating"
@@ -35,22 +43,23 @@
             <a
                 class="c-board__btn"
                 :class="{ 'c-board__btn--success': is_creating }"
-                @click="createTask()"
+                @click="is_creating ? storeTaskOnClick() : createTask()"
             >
                 <i
                     class="fa"
                     :class="{
                         'fa-plus': !is_creating,
-                        'fa-check': is_creating
+                        'fa-check ': is_creating
                     }"
                 ></i>
             </a>
         </div>
         <task-modal
-            v-if="modalOn"
-            @close-modal="closeModal()"
             :task="editingTask"
+            @task-deleted="deleteTask"
+            @close-modal="closeModal()"
             @task-updated="replaceUpdatedTask"
+            v-if="modalOn"
         ></task-modal>
     </div>
 </template>
@@ -74,21 +83,34 @@ export default {
         };
     },
 
+    watch: {
+        tasks() {
+            const vm = this;
+
+            this.$nextTick(() => {
+                vm.$forceUpdate();
+                Vue.vueDragula.eventBus.$forceUpdate();
+            });
+
+            // Vue.vueDragula.$forceUpdate();
+        }
+    },
+
     methods: {
+        storeTaskOnClick() {
+            this.$refs.createTaskComp.storeTask();
+        },
+
         createTask() {
-            if (this.is_creating) {
-                // SUBMIT
-                // trigger method in child from parent
-                this.$refs.createTaskComp.submitTask();
-            } else {
-                // SHOW
+            if (!this.is_creating) {
                 this.is_creating = true;
             }
         },
 
-        submitTask(newTitle) {
-            console.log(newTitle);
-            this.tasks.push({ title: newTitle });
+        submitTask(newTask) {
+            // console.log(newTask);
+            this.tasks.push(newTask);
+
             this.is_creating = false;
         },
 
@@ -103,6 +125,14 @@ export default {
 
         closeModal() {
             this.modalOn = false;
+        },
+
+        deleteTask(taskId) {
+            this.tasks.forEach((element, index) => {
+                if (element.id === taskId) {
+                    this.tasks.splice(index, 1);
+                }
+            });
         },
 
         replaceUpdatedTask(task) {

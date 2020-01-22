@@ -23,6 +23,10 @@
                         </h3>
                     </div>
                     <div class="col-auto px-0">
+                        <a @click="deleteTask()">
+                            <i class="fa fa-trash u-text-white u-mr-xsmall"></i>
+                        </a>
+
                         <a @click="enableEditTask" v-if="!is_editing">
                             <i class="u-text-white fa fa-pencil u-mr-xsmall"></i
                         ></a>
@@ -41,11 +45,7 @@
                 </div>
 
                 <div class="c-modal__body">
-                    <p
-                        @keypress="editTask()"
-                        :contenteditable="is_editing"
-                        ref="editable"
-                    >
+                    <p :contenteditable="is_editing" ref="editable">
                         {{ task_description }}
                     </p>
                 </div>
@@ -54,15 +54,31 @@
                     <a
                         class="c-btn c-btn--success c-btn--fullwidth"
                         @click="submitTaskChange"
-                        href="#"
                         >Save Changes
                     </a>
                 </div>
-                <ol class="c-stream">
-                    <comment></comment>
-                </ol>
-                <!-- <div class="c-modal__footer"></div> -->
-                <!-- add comments, add completed -->
+                <div v-if="!this.is_editing">
+                    <ol class="c-stream u-mb-zero">
+                        <comment
+                            :comment="comment"
+                            v-for="(comment, index) in task.comments"
+                            :key="index"
+                        ></comment>
+                    </ol>
+                    <div class="c-modal__footer">
+                        <div class="c-chat__composer">
+                            <div class="c-field has-addon-left">
+                                <input
+                                    @keydown.enter="submitNewComment"
+                                    v-model="new_comment"
+                                    class="c-input"
+                                    type="text"
+                                    placeholder="Write your comment here."
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -78,6 +94,7 @@ export default {
 
     data() {
         return {
+            new_comment: null,
             is_editing: false,
             task_title: this.task.title,
             task_description: this.task.description
@@ -101,13 +118,6 @@ export default {
             });
         },
 
-        editTask() {
-            // let newTitle = this.$refs.editableh3.innerText;
-            // this.task_title = newTitle;
-            // let newDescription = this.$refs.editable.innerText;
-            // this.task_description = newDescription;
-        },
-
         submitTaskChange() {
             const vm = this;
 
@@ -120,12 +130,50 @@ export default {
                 .patch("/ajax/task/" + vm.task.id, obj)
                 .then(function(response) {
                     let updatedTask = response.data.task;
+                    console.log(updatedTask);
                     vm.closeModal();
                     vm.$emit("task-updated", updatedTask);
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
+        },
+
+        deleteTask() {
+            const vm = this;
+
+            axios
+                .delete("/ajax/task/" + vm.task.id)
+                .then(function(response) {
+                    vm.closeModal();
+                    vm.$emit("task-deleted", vm.task.id);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
+        submitNewComment() {
+            console.log(this.new_comment);
+            if (this.new_comment) {
+                let obj = {
+                    message: this.new_comment,
+                    task_id: this.task.id
+                };
+
+                const vm = this;
+
+                axios
+                    .post("/ajax/comment", obj)
+                    .then(function(response) {
+                        console.log(response);
+                        vm.task.comments.push(response.data.comment);
+                        vm.new_comment = null;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
         }
     }
 };

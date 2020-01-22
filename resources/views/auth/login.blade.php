@@ -20,13 +20,7 @@
 </head>
 
 <body class="o-page o-page--center">
-    <!--[if lte IE 9]>
-            <p class="browserupgrade">
-                You are using an <strong>outdated</strong> browser. Please
-                <a href="http://browsehappy.com/">upgrade your browser</a> to
-                improve your experience and security.
-            </p>
-        <![endif]-->
+
 
     <div class="o-page__card">
         <div class="c-card u-mb-xsmall">
@@ -44,7 +38,7 @@
                 <div class="c-field u-mb-small">
                     <label class="c-field__label" for="email">Log in with your e-mail address</label>
                     <input id="email" type="email" class="c-input @error('email')c-input--danger @enderror" name="email"
-                        value="{{ old('email') }}" autocomplete="email" autofocus placeholder="clark@dashboard.com" />
+                        value="example@example.com" autocomplete="email" autofocus placeholder="clark@dashboard.com" />
                     @error('email')
                     <small class="c-field__message u-color-danger" role="alert">
                         <i class="fa fa-times-circle"></i>
@@ -56,7 +50,7 @@
                 <div class="c-field u-mb-small">
                     <label class="c-field__label" for="password">Password</label>
                     <input class="c-input @error('password')c-input--danger @enderror" name="password" type="password"
-                        id="password" />
+                        value="password" id="password" />
                     @error('password')
                     <small class="c-field__message u-color-danger" role="alert">
                         <i class="fa fa-times-circle"></i>
@@ -71,10 +65,7 @@
             </form>
         </div>
 
-        <div class="o-line">
-            <a class="u-text-mute u-text-small" href="register.html">Don’t have an account yet? Get Started</a>
-            <a class="u-text-mute u-text-small" href="forgot-password.html">Forgot Password?</a>
-        </div>
+
     </div>
 
     <script src="js/main.min.js"></script>

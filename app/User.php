@@ -38,7 +38,12 @@ class User extends Authenticatable
 
     public function comments()
     {
-
         return $this->hasMany('App\Comment');
+    }
+
+    public function getNameAttribute($value)
+    {
+        // dd($value);
+        return ucfirst($value);
     }
 }

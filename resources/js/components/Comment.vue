@@ -12,24 +12,21 @@
 
         <div class="c-stream-item__content o-media__body">
             <div class="c-stream-item__header">
-                <a class="c-stream-item__name" href="#"
-                    >Mollie Richardson<span class="c-stream-item__username"
-                        >@Mollie</span
-                    >
-                </a>
-                <span class="c-stream-item__time">3m</span>
+                <a class="c-stream-item__name">{{ comment.user.name }} </a>
+                <span class="c-stream-item__time">
+                    {{ comment.human_readable_date }}
+                </span>
             </div>
 
             <p class="u-mb-small">
-                I shared this on my fb wall a few months back, and I thought I'd
-                share it here again because it's such a great read. "You already
-                found your passion.” You are just ignoring it. The problem isn't
-                passion. It's never passion. It's priorities.
+                {{ comment.message }}
             </p>
         </div>
     </li>
 </template>
 
 <script>
-export default {};
+export default {
+    props: ["comment"]
+};
 </script>

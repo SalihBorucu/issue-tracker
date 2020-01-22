@@ -27,7 +27,7 @@
 
     <!-- Add your site or application content here -->
     <header class="c-navbar">
-        <a class="c-navbar__brand" href="#!">
+        <a class="c-navbar__brand">
             <img src="img/logo.png" alt="Dashboard UI Kit">
         </a>
 
@@ -42,14 +42,17 @@
         <div class="c-dropdown u-ml-auto dropdown">
             <a class="c-avatar c-avatar--xsmall has-dropdown dropdown-toggle" href="#" id="dropdwonMenuAvatar"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="c-avatar__img" src="img/avatar-72.jpg" alt="User's Profile Picture">
-                <span style=text-transform:capitalize>{{auth()->user()->name}}</span>
+                <img class="c-avatar__img u-mr-xsmall" src="img/avatar-72.jpg" alt="User's Profile Picture">
+                <span>{{auth()->user()->name}}</span>
             </a>
 
             <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdwonMenuAvatar">
-                <a class="c-dropdown__item dropdown-item" href="#">Edit Profile</a>
-                <a class="c-dropdown__item dropdown-item" href="#">View Activity</a>
-                <a class="c-dropdown__item dropdown-item" href="#">Manage Roles</a>
+                <a class="c-dropdown__item dropdown-item" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">Log Out</a>
+                <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                    @csrf
+                </form>
+
             </div>
 
 
@@ -62,8 +65,8 @@
         </button><!-- // .c-nav-toggle -->
     </header>
 
-
     <div class="container-fluid u-mt-small" id="app">
+
         <main-app :inj-boards="{{$boards}}">
 
         </main-app>
@@ -71,7 +74,7 @@
 
     </div>
 
-    <script src="js/main.min.js"></script>
+
     <script src="js/app.js"></script>
 </body>
 

@@ -48,8 +48,8 @@ class TaskController extends Controller
             "board_id" => $request->board_id,
             "user_id" => $id,
             "is_completed" => 0,
-
         ]);
+        $task = Task::with(['comments', 'comments.user'])->find($task->id);
 
         return response()->json([
             "task" => $task,
@@ -86,7 +86,7 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update($taskId, Request $request, Task $task)
+    public function update($taskId, Request $request)
     {
         $task = Task::findOrFail($taskId);
 
@@ -96,6 +96,24 @@ class TaskController extends Controller
         ]);
 
         $task->update($validated);
+        $task = Task::with(['comments', 'comments.user'])->find($task->id);
+
+        return response()->json([
+            "task" => $task,
+        ]);
+
+    }
+
+    public function updateBoard($taskId, Request $request)
+    {
+        $task = Task::findOrFail($taskId);
+
+        $validated = $request->validate([
+            "board_id" => 'required|exists:boards,id',
+        ]);
+
+        $task->update($validated);
+        $task = Task::with('comments')->find($task->id);
 
         return response()->json([
             "task" => $task,
@@ -111,6 +129,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return response()->json();
+
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Ajax;
 
 use App\Comment;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -35,7 +36,22 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            "message" => 'required',
+        ]);
+
+        $comment = Comment::create([
+            "message" => $request->message,
+            "task_id" => $request->task_id,
+            "user_id" => auth()->user()->id,
+        ]);
+        $comment = Comment::with('user')->find($comment->id);
+
+        return response()->json([
+            "comment" => $comment,
+        ]);
+
     }
 
     /**

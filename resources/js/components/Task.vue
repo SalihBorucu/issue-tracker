@@ -6,10 +6,7 @@
             </p>
             <div class="c-task__indicators">
                 <span class="c-task__indicator">
-                    <i class="fa fa-comments-o"></i>2
-                </span>
-                <span class="c-task__indicator">
-                    <i class="fa fa-check-square-o"></i>1/4
+                    <i class="fa fa-comments-o"></i>{{ task.comments.length }}
                 </span>
             </div>
         </div>

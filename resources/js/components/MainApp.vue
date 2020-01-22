@@ -41,6 +41,54 @@ export default {
         };
     },
 
+    mounted() {
+        const vm = this;
+
+        // Vue.vueDragula.eventBus.$on("drop", function(args) {
+        //     console.log("asd");
+        // });
+
+        // Vue.vueDragula.eventBus.$on("drag", function(args) {
+        //     console.log("123");
+        // });
+
+        Vue.vueDragula.eventBus.$on("drop", function(args) {
+            let taskId = parseInt(args[1].dataset.taskId);
+            let fromBoardId = parseInt(args[3].dataset.boardId);
+            let toBoardId = parseInt(args[2].dataset.boardId);
+            console.log(args);
+
+            let obj = {
+                board_id: toBoardId
+            };
+
+            axios
+                .patch("/ajax/task/" + taskId + "/update-board", obj)
+                .then(function(response) {
+                    // console.log(response);
+
+                    let fromBoardIndex = vm.boards.findIndex(
+                        board => board.id === fromBoardId
+                    );
+                    let toBoardIndex = vm.boards.findIndex(
+                        board => board.id === toBoardId
+                    );
+
+                    vm.boards[fromBoardIndex].tasks.forEach((task, index) => {
+                        if (task.id === taskId) {
+                            // vm.boards[fromBoardIndex].tasks.splice(index, 1);
+
+                            task.board_id = toBoardId;
+                            // vm.boards[toBoardIndex].tasks.push(task);
+                        }
+                    });
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        });
+    },
+
     methods: {
         createBoardModal() {
             this.modalOn = true;

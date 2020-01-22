@@ -11,7 +11,7 @@ $factory->define(Task::class, function (Faker $faker) {
         'description' => $faker->sentence(rand(5, 100)),
         'is_completed' => rand(0, 1),
         'due_date' => now(),
-        'user_id' => 1,
-        "board_id" => rand(20, 22),
+        'user_id' => rand(1, 9),
+        "board_id" => rand(1, 3),
     ];
 });

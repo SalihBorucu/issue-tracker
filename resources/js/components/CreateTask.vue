@@ -5,7 +5,7 @@
             contenteditable="true"
             ref="editable"
             @keypress="titleChanged"
-            @keyup.enter="submitTask"
+            @keyup.enter="storeTask"
             @focus="clearPh($event)"
         >
             New Task
@@ -56,16 +56,14 @@ export default {
 
             axios
                 .post("/ajax/task", obj)
-                .then(function(response) {})
+                .then(function(response) {
+                    // console.log(response.data.task);
+                    let newTask = response.data.task;
+                    vm.$emit("task-submitted", newTask);
+                })
                 .catch(function(error) {
                     console.log(error);
                 });
-        },
-
-        submitTask() {
-            let newTitle = this.$refs.editable.innerText.trim();
-            this.$emit("task-submitted", newTitle);
-            this.storeTask();
         }
     }
 };

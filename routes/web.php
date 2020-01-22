@@ -11,13 +11,13 @@
 |
  */
 
-Route::get('/', 'AppController@index');
+Route::get('/', 'AppController@index')->middleware('auth');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('/ajax')->group(function () {
+Route::prefix('/ajax')->middleware('auth')->group(function () {
     // BOARD
     Route::post('/board', 'Ajax\BoardController@store');
     Route::patch('/board/{boardId}', 'Ajax\BoardController@update');
@@ -26,5 +26,10 @@ Route::prefix('/ajax')->group(function () {
     // TASK
     Route::post('/task', 'Ajax\TaskController@store');
     Route::patch('/task/{taskId}', 'Ajax\TaskController@update');
+    Route::patch('/task/{taskId}/update-board', 'Ajax\TaskController@updateBoard');
+    Route::delete('/task/{task}', 'Ajax\TaskController@destroy');
+
+    // COMMENT
+    Route::post('/comment', 'Ajax\CommentController@store');
 
 });
