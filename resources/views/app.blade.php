@@ -21,11 +21,7 @@
 </head>
 
 <body>
-    <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
 
-    <!-- Add your site or application content here -->
     <header class="c-navbar">
         <a class="c-navbar__brand">
             <img src="img/logo.png" alt="Dashboard UI Kit">
@@ -37,7 +33,7 @@
 
             </ul>
         </nav>
-        <!-- // Navigation items  -->
+
 
         <div class="c-dropdown u-ml-auto dropdown">
             <a class="c-avatar c-avatar--xsmall has-dropdown dropdown-toggle" href="#" id="dropdwonMenuAvatar"
@@ -76,6 +72,7 @@
 
 
     <script src="js/app.js"></script>
+
 </body>
 
 </html>
