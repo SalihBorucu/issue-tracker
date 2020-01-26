@@ -20,10 +20,10 @@ class CreateTasksTable extends Migration
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');
 
             $table->string('title');
-            $table->text('description')->nullable(false);
+            $table->text('description')->nullable(true);
 
             $table->boolean('is_completed')->default(false);
-            $table->datetime('due_date')->nullable(false);
+            $table->datetime('due_date')->nullable(true);
             $table->timestamps();
         });
     }
