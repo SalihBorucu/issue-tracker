@@ -27,7 +27,8 @@
                             <i class="fa fa-trash u-text-white u-mr-xsmall"></i>
                         </a>
 
-                        <a @click="enableEditTask" v-if="!is_editing">
+                        <a @click="enableEditTask" v-if="!is_editing"
+                            >d
                             <i class="u-text-white fa fa-pencil u-mr-xsmall"></i
                         ></a>
                         <a @click="submitTaskChange" v-else>
@@ -130,7 +131,7 @@ export default {
                 .patch("/ajax/task/" + vm.task.id, obj)
                 .then(function(response) {
                     let updatedTask = response.data.task;
-                    console.log(updatedTask);
+                    // console.log(updatedTask);
                     vm.closeModal();
                     vm.$emit("task-updated", updatedTask);
                 })

@@ -92,7 +92,7 @@ class TaskController extends Controller
 
         $validated = $request->validate([
             "title" => 'required',
-            "description" => 'required',
+
         ]);
 
         $task->update($validated);

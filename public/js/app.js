@@ -2672,6 +2672,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["task"],
@@ -2708,8 +2709,8 @@ __webpack_require__.r(__webpack_exports__);
         description: vm.$refs.editable.innerText.trim()
       };
       axios.patch("/ajax/task/" + vm.task.id, obj).then(function (response) {
-        var updatedTask = response.data.task;
-        console.log(updatedTask);
+        var updatedTask = response.data.task; // console.log(updatedTask);
+
         vm.closeModal();
         vm.$emit("task-updated", updatedTask);
       })["catch"](function (error) {
@@ -40047,6 +40048,7 @@ var render = function() {
                 _vm._v(" "),
                 !_vm.is_editing
                   ? _c("a", { on: { click: _vm.enableEditTask } }, [
+                      _vm._v("d\n                        "),
                       _c("i", {
                         staticClass: "u-text-white fa fa-pencil u-mr-xsmall"
                       })

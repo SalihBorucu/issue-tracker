@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Log in | Dashboard UI Kit</title>
+    <title>Issue-Tracker - Log In</title>
     <meta name="description" content="Dashboard UI Kit" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -29,7 +29,7 @@
                     <img src="img/logo-login.svg" alt="Dashboard UI Kit" />
                 </a>
                 <h1 class="u-h3 u-text-center u-mb-zero">
-                    Welcome back! Please login.
+                    Welcome! Please login.
                 </h1>
             </header>
 
@@ -60,7 +60,7 @@
                 </div>
 
                 <button class="c-btn c-btn--info c-btn--fullwidth" type="submit">
-                    Sign in to Dashboard
+                    Sign in
                 </button>
             </form>
         </div>
