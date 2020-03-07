@@ -126,6 +126,7 @@ export default {
                 title: vm.$refs.editableh3.innerText.trim(),
                 description: vm.$refs.editable.innerText.trim()
             };
+            console.log(obj);
 
             axios
                 .patch("/ajax/task/" + vm.task.id, obj)

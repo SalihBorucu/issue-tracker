@@ -2708,6 +2708,7 @@ __webpack_require__.r(__webpack_exports__);
         title: vm.$refs.editableh3.innerText.trim(),
         description: vm.$refs.editable.innerText.trim()
       };
+      console.log(obj);
       axios.patch("/ajax/task/" + vm.task.id, obj).then(function (response) {
         var updatedTask = response.data.task; // console.log(updatedTask);
 

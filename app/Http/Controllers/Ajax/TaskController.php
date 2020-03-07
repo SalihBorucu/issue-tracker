@@ -94,8 +94,9 @@ class TaskController extends Controller
             "title" => 'required',
 
         ]);
+        // dd($request->description);
 
-        $task->update($validated);
+        $task->update([$validated, 'description' => $request->description]);
         $task = Task::with(['comments', 'comments.user'])->find($task->id);
 
         return response()->json([
