@@ -14,7 +14,7 @@
                 <div class="c-modal__header ">
                     <div class="col pl-0">
                         <h3
-                            @keyup="editTask()"
+                            
                             class="c-modal__title"
                             :contenteditable="is_editing"
                             ref="editableh3"
@@ -121,18 +121,17 @@ export default {
 
         submitTaskChange() {
             const vm = this;
-
+            
             let obj = {
                 title: vm.$refs.editableh3.innerText.trim(),
                 description: vm.$refs.editable.innerText.trim()
             };
-            console.log(obj);
 
             axios
                 .patch("/ajax/task/" + vm.task.id, obj)
+                
                 .then(function(response) {
                     let updatedTask = response.data.task;
-                    // console.log(updatedTask);
                     vm.closeModal();
                     vm.$emit("task-updated", updatedTask);
                 })
@@ -156,7 +155,6 @@ export default {
         },
 
         submitNewComment() {
-            console.log(this.new_comment);
             if (this.new_comment) {
                 let obj = {
                     message: this.new_comment,

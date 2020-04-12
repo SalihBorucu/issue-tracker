@@ -2396,8 +2396,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  mounted: function mounted() {// console.log('Component mounted.')
   }
 });
 
@@ -2708,10 +2707,8 @@ __webpack_require__.r(__webpack_exports__);
         title: vm.$refs.editableh3.innerText.trim(),
         description: vm.$refs.editable.innerText.trim()
       };
-      console.log(obj);
       axios.patch("/ajax/task/" + vm.task.id, obj).then(function (response) {
-        var updatedTask = response.data.task; // console.log(updatedTask);
-
+        var updatedTask = response.data.task;
         vm.closeModal();
         vm.$emit("task-updated", updatedTask);
       })["catch"](function (error) {
@@ -2728,8 +2725,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     submitNewComment: function submitNewComment() {
-      console.log(this.new_comment);
-
       if (this.new_comment) {
         var obj = {
           message: this.new_comment,
@@ -40013,12 +40008,7 @@ var render = function() {
                   {
                     ref: "editableh3",
                     staticClass: "c-modal__title",
-                    attrs: { contenteditable: _vm.is_editing },
-                    on: {
-                      keyup: function($event) {
-                        return _vm.editTask()
-                      }
-                    }
+                    attrs: { contenteditable: _vm.is_editing }
                   },
                   [
                     _vm._v(

@@ -96,9 +96,10 @@ class TaskController extends Controller
         ]);
         // dd($request->description);
 
-        $task->update([$validated, 'description' => $request->description]);
+        $task->update($validated);
+        $task->update(['description' => $request->description]);
         $task = Task::with(['comments', 'comments.user'])->find($task->id);
-
+        // dd($task);
         return response()->json([
             "task" => $task,
         ]);
